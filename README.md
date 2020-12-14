@@ -1,4 +1,4 @@
 heroku/gifsicle
-Current version: 1.91
+Current version: 1.92
 
 
