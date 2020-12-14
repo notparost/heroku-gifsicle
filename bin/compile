@@ -8,8 +8,8 @@ indent() {
   sed -u 's/^/       /'
 }
 
-VERSION="1.91"
-TAR_URL="https://github.com/kornelski/giflossy/archive/$VERSION.tar.gz"
+VERSION="1.92"
+TAR_URL="https://github.com/kohler/gifsicle/archive/master.tar.gz"
 
 echo "-----> Installing gifsicle with lossy compression ability"
 
@@ -29,7 +29,7 @@ if [ ! -f "$CACHE_FILE" ]; then
   curl -L --silent $TAR_URL | tar xz
 
   echo "-----> Building gifsicle"
-  cd "giflossy-$VERSION/"
+  cd "gifsicle-$VERSION/"
 
   ./bootstrap.sh | indent
   autoconf -i | indent
@@ -38,7 +38,7 @@ if [ ! -f "$CACHE_FILE" ]; then
   make | indent
   make install | indent
 
-  rm -rf "giflossy-$VERSION/"
+  rm -rf "gifsicle-$VERSION/"
 
   echo "-----> Caching gifsicle installation"
   cd "$VENDOR_DIR"
