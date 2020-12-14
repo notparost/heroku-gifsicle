@@ -8,8 +8,8 @@ indent() {
   sed -u 's/^/       /'
 }
 
-VERSION="master"
-TAR_URL="https://github.com/kohler/gifsicle/archive/$VERSION.tar.gz"
+VERSION="1.92"
+TAR_URL="http://www.lcdf.org/gifsicle/gifsicle-$VERSION.tar.gz"
 
 echo "-----> Installing gifsicle with lossy compression ability"
 
