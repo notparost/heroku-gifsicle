@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+set -o errexit
+set -o nounset
+set -o pipefail
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+VERSION="1.92"
+TAR_URL="https://github.com/kornelski/giflossy/archive/$VERSION.tar.gz"
+
+echo "-----> Installing gifsicle with lossy compression ability"
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+VENDOR_DIR="$BUILD_DIR/vendor"
+INSTALL_DIR="$VENDOR_DIR/gifsicle"
+PROFILE_DIR="$BUILD_DIR/.profile.d"
+CACHE_FILE="$CACHE_DIR/gifsicle-$VERSION.tar.gz"
+
+if [ ! -f "$CACHE_FILE" ]; then
+  mkdir -p "$INSTALL_DIR"
+  cd "$INSTALL_DIR"
+
+  echo "-----> Downloading gifsicle from $TAR_URL"
+  curl -L --silent $TAR_URL | tar xz
+
+  echo "-----> Building gifsicle"
+  cd "giflossy-$VERSION/"
+
+  ./bootstrap.sh | indent
+  autoconf -i | indent
+
+  ./configure --disable-gifview --prefix="$INSTALL_DIR" | indent
+  make | indent
+  make install | indent
+
+  rm -rf "giflossy-$VERSION/"
+
+  echo "-----> Caching gifsicle installation"
+  cd "$VENDOR_DIR"
+  REL_INSTALL_DIR="gifsicle"
+  tar czf "$REL_INSTALL_DIR.tar.gz" "$REL_INSTALL_DIR"
+  mv "$REL_INSTALL_DIR.tar.gz" "$CACHE_FILE"
+else
+  echo "-----> Extracting gifsicle from cache $CACHE_FILE => $VENDOR_DIR"
+  tar xzf "$CACHE_FILE" -C "$VENDOR_DIR"
+fi
+
+echo "-----> Updating environment"
+mkdir -p "$PROFILE_DIR"
+echo "export PATH=\"\$PATH:/app/vendor/gifsicle/bin\"" >> "$PROFILE_DIR/gifsicle.sh"
