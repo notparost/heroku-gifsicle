@@ -46,7 +46,7 @@ echo "-----> Downloading gifsicle from $TAR_URL"
 curl -L --silent $TAR_URL | tar xz
 
 echo "-----> Building gifsicle"
-cd "giflossy-$VERSION/"
+cd "gifsicle-$VERSION/"
 
 ./gifsicle.sh | indent
 autoconf -i | indent
