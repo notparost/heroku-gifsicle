@@ -30,7 +30,6 @@ curl -L --silent $TAR_URL | tar xz
 echo "-----> Building gifsicle"
 cd "gifsicle-$VERSION/"
 
-./bootstrap.sh | indent
 autoconf -i | indent
 
 ./configure --disable-gifview --prefix="$INSTALL_DIR" | indent
