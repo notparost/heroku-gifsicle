@@ -1,49 +1,15 @@
 #!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
-set -o errexit
-set -o nounset
-set -o pipefail
-
-indent() {
-  sed -u 's/^/       /'
-}
 
 VERSION="1.92"
 TAR_URL="http://www.lcdf.org/gifsicle/gifsicle-$VERSION.tar.gz"
 
-echo "-----> Installing gifsicle."
-
-BUILD_DIR=$1
-CACHE_DIR=$2
-
-VENDOR_DIR="$BUILD_DIR/vendor"
-INSTALL_DIR="$VENDOR_DIR/gifsicle"
-PROFILE_DIR="$BUILD_DIR/.profile.d"
-CACHE_FILE="$CACHE_DIR/gifsicle-$VERSION.tar.gz"
-
-mkdir -p "$INSTALL_DIR"
-cd "$INSTALL_DIR"
-
-echo "-----> Downloading gifsicle from $TAR_URL"
-curl -L --silent $TAR_URL | tar xz
-
-echo "-----> Building gifsicle"
-cd "gifsicle-$VERSION/"
-
-autoconf -i | indent
-
-./configure --disable-gifview --prefix="$INSTALL_DIR" | indent
-make | indent
-make install | indent
-
-rm -rf "gifsicle-$VERSION/"
-
-echo "-----> Caching gifsicle installation"
-cd "$VENDOR_DIR"
-REL_INSTALL_DIR="gifsicle"
-tar czf "$REL_INSTALL_DIR.tar.gz" "$REL_INSTALL_DIR"
-mv "$REL_INSTALL_DIR.tar.gz" "$CACHE_FILE"
-
-echo "-----> Updating environment"
-mkdir -p "$PROFILE_DIR"
-echo "export PATH=\"\$PATH:/app/vendor/gifsicle/bin\"" >> "$PROFILE_DIR/gifsicle.sh"
+#!/usr/bin/env bash
+echo "-----> Installing gifsicle $VERSION"
+# change to the the BUILD_DIR ($1)
+cd $1
+# download the binary (-O) silently (-s)
+curl http://www.lcdf.org/gifsicle/gifsicle-$VERSION.tar.gz -s -O -ssl3
+# make a directory to untar (like unzip) the binary
+mkdir -p vendor/mupdf
+# untar the binary to the directory we want
+tar -C vendor/mupdf -xvf mupdf.tar.gz
