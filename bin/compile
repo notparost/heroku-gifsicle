@@ -11,7 +11,7 @@ indent() {
 VERSION="1.92"
 TAR_URL="http://www.lcdf.org/gifsicle/gifsicle-$VERSION.tar.gz"
 
-echo "-----> Installing gifsicle with lossy compression ability"
+echo "-----> Installing gifsicle."
 
 BUILD_DIR=$1
 CACHE_DIR=$2
