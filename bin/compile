@@ -38,34 +38,31 @@ INSTALL_DIR="$VENDOR_DIR/gifsicle"
 PROFILE_DIR="$BUILD_DIR/.profile.d"
 CACHE_FILE="$CACHE_DIR/gifsicle-$VERSION.tar.gz"
 
-if [ ! -f "$CACHE_FILE" ]; then
-  mkdir -p "$INSTALL_DIR"
-  cd "$INSTALL_DIR"
 
-  echo "-----> Downloading gifsicle from $TAR_URL"
-  curl -L --silent $TAR_URL | tar xz
+mkdir -p "$INSTALL_DIR"
+cd "$INSTALL_DIR"
 
-  echo "-----> Building gifsicle"
-  cd "giflossy-$VERSION/"
+echo "-----> Downloading gifsicle from $TAR_URL"
+curl -L --silent $TAR_URL | tar xz
 
-  ./gifsicle.sh | indent
-  autoconf -i | indent
+echo "-----> Building gifsicle"
+cd "giflossy-$VERSION/"
 
-  ./configure --disable-gifview --prefix="$INSTALL_DIR" | indent
-  make | indent
-  make install | indent
+./gifsicle.sh | indent
+autoconf -i | indent
 
-  rm -rf "gifsicle-$VERSION/"
+./configure --disable-gifview --prefix="$INSTALL_DIR" | indent
+make | indent
+make install | indent
 
-  echo "-----> Caching gifsicle installation"
-  cd "$VENDOR_DIR"
+rm -rf "gifsicle-$VERSION/"
 
-  tar czf "gifsicle.tar.gz" "gifsicle"
-  mv "gifsicle.tar.gz" "$CACHE_FILE"
-else
-  echo "-----> Extracting gifsicle from cache $CACHE_FILE => $VENDOR_DIR"
-  tar xzf "$CACHE_FILE" -C "$VENDOR_DIR"
-fi
+echo "-----> Caching gifsicle installation"
+cd "$VENDOR_DIR"
+
+tar czf "gifsicle.tar.gz" "gifsicle"
+mv "gifsicle.tar.gz" "$CACHE_FILE"
+
 
 echo "-----> Updating environment"
 mkdir -p "$PROFILE_DIR"
