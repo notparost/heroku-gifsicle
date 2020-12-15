@@ -10,6 +10,6 @@ cd $1
 # download the binary (-O) silently (-s)
 curl http://www.lcdf.org/gifsicle/gifsicle-$VERSION.tar.gz -s -O -ssl3
 # make a directory to untar (like unzip) the binary
-mkdir -p vendor/mupdf
+mkdir -p vendor/gifsicle
 # untar the binary to the directory we want
-tar -C vendor/mupdf -xvf mupdf.tar.gz
+tar -C vendor/gifsicle -xvf gifsicle-$VERSION.tar.gz
